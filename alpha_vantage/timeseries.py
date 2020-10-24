@@ -34,7 +34,7 @@ class TimeSeries(av):
             symbol:  the symbol for the equity we want to get its data
             outputsize:  The size of the call, supported values are
                 'compact' and 'full; the first returns the last 100 points in the
-                data series, and 'full' returns the full-length intraday times
+                data series, and 'full' returns the full-length daily times
                 series, commonly above 1MB (default 'compact')
         """
         _FUNCTION_KEY = "TIME_SERIES_DAILY"
@@ -52,7 +52,7 @@ class TimeSeries(av):
             symbol:  the symbol for the equity we want to get its data
             outputsize:  The size of the call, supported values are
                 'compact' and 'full; the first returns the last 100 points in the
-                data series, and 'full' returns the full-length intraday times
+                data series, and 'full' returns the full-length daily times
                 series, commonly above 1MB (default 'compact')
         """
         _FUNCTION_KEY = "TIME_SERIES_DAILY_ADJUSTED"
@@ -113,12 +113,26 @@ class TimeSeries(av):
 
     @av._output_format
     @av._call_api_on_func
-    def get_batch_stock_quotes(self, symbols):
-        """ Return multiple stock quotes with a single request.
-        It raises ValueError when problems arise
+    def get_quote_endpoint(self, symbol):
+        """ Return the latest price and volume information for a
+         security of your choice 
 
         Keyword Arguments:
-            symbols:  A tuple or list Sof symbols to query
+            symbol:  the symbol for the equity we want to get its data
+
         """
-        _FUNCTION_KEY = "BATCH_STOCK_QUOTES"
-        return _FUNCTION_KEY, 'Stock Quotes', 'Meta Data'
+        _FUNCTION_KEY = "GLOBAL_QUOTE"
+        return _FUNCTION_KEY, 'Global Quote', None
+
+    @av._output_format
+    @av._call_api_on_func
+    def get_symbol_search(self, keywords):
+        """ Return best matching symbols and market information
+        based on keywords. It raises ValueError when problems arise
+
+        Keyword Arguments:
+            keywords: the keywords to query on
+
+        """
+        _FUNCTION_KEY = "SYMBOL_SEARCH"
+        return _FUNCTION_KEY, 'bestMatches', None
